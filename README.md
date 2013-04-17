@@ -1,3 +1,10 @@
+# Installation steps
+
+* bundle
+* cp s3_photos_syncing.yml{.sample,}
+* edit the s3_photos_syncing.yml
+* run the script
+
 # How do I know the number of photos processed?
 
 Redirect the stdout to a log file:
