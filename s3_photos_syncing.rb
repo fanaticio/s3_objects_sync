@@ -21,11 +21,23 @@ class Logger
   end
 
   def self.info(message)
-    datetime    = Time.now.strftime('[%Y-%d-%m - %H:%M:%S]')
-    log_message = "#{datetime} #{message}"
+    write_message(:info, message)
+  end
 
-    puts log_message
-    file.write("#{log_message}\n")
+  def self.error(message)
+    write_message(:error, message)
+  end
+
+  def self.write_message(type, message)
+    formatted_message = format_message(type, message)
+
+    puts formatted_message
+  end
+
+  def self.format_message(type, message)
+    datetime    = Time.now.strftime('[%Y-%d-%m - %H:%M:%S]')
+
+    "#{datetime} - #{type} - #{message}"
   end
 end
 
@@ -48,13 +60,17 @@ module Aws
     destination_object = destination.objects[object.key]
 
     if destination_object.exists?
-      ::Logger.info("already copyied #{object.key}")
+      ::Logger.info("already copied #{object.key}")
       return
     end
 
     ::Logger.info("copying #{object.key}")
-    destination_object.copy_from(object.key, bucket: source, acl: :public_read)
-    ::Logger.info("copyied #{object.key}")
+    begin
+      destination_object.copy_from(object.key, bucket: source, acl: :public_read)
+      ::Logger.info("copied #{object.key}")
+    rescue Exception => error
+      ::Logger.error("error on copy #{object.key}: #{error}")
+    end
   end
 end
 
