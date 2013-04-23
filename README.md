@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/fanaticio/s3_photos_syncing.png?branch=develop)](https://travis-ci.org/fanaticio/s3_photos_syncing)
+[![Coverage Status](https://coveralls.io/repos/fanaticio/s3_photos_syncing/badge.png?branch=develop)](https://coveralls.io/r/fanaticio/s3_photos_syncing)
+[![Code Climate](https://codeclimate.com/github/fanaticio/s3_photos_syncing.png)](https://codeclimate.com/github/fanaticio/s3_photos_syncing)
+
 # Installation steps
 
 * bundle
