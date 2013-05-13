@@ -50,9 +50,10 @@ describe S3PhotosSyncing::Processor do
     describe '#executor' do
       before(:each) { S3PhotosSyncing::Processor.any_instance.stub(:configure_aws) }
 
-      it 'creates new Executors instance with X threads' do
-        Executors.should_receive(:newFixedThreadPool).with(42)
+      it 'creates new Executors instance with number of threads based on options' do
+        configuration[:max_threads] = 42
 
+        Executors.should_receive(:newFixedThreadPool).with(42)
         processor.executor
       end
     end

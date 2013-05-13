@@ -8,8 +8,6 @@ require 's3_photos_syncing/transfer_asynchronously'
 
 module S3PhotosSyncing
   class Processor
-    MAX_THREAD_COUNT = 42
-
     def initialize(configuration)
       @configuration = configuration
     end
@@ -23,7 +21,7 @@ module S3PhotosSyncing
     end
 
     def executor
-      @executor ||= Executors.newFixedThreadPool(MAX_THREAD_COUNT)
+      @executor ||= Executors.newFixedThreadPool(@configuration[:max_threads])
     end
 
     def run
