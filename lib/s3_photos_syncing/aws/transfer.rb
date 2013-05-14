@@ -8,6 +8,11 @@ module S3PhotosSyncing
         @object             = object
         @source_bucket      = options[:from]
         @destination_bucket = options[:to]
+        @force              = options[:force]
+      end
+
+      def can_copy?
+        @force || !destination_object.exists?
       end
 
       def destination
@@ -24,7 +29,7 @@ module S3PhotosSyncing
           return
         end
 
-        if destination_object.exists?
+        unless can_copy?
           Logger.info("already copied #{source_object.key}")
           return
         end

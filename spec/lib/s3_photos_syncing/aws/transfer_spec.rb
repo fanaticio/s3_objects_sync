@@ -3,7 +3,50 @@ require 's3_photos_syncing/aws/transfer'
 
 describe S3PhotosSyncing::AWS::Transfer do
   let(:object)   { mock }
-  let(:transfer) { S3PhotosSyncing::AWS::Transfer.new(object, { from: 'awesome_bucket', to: 'another_bucket' }) }
+  let(:transfer) { S3PhotosSyncing::AWS::Transfer.new(object, options) }
+  let(:options)  { { from: 'awesome_bucket', to: 'another_bucket' } }
+
+  describe '#can_copy?' do
+    context 'when force is set to "true"' do
+      before(:each) do
+        options[:force] = true
+      end
+
+      context 'when destination_object exists' do
+        it 'returns true' do
+          transfer.stub_chain(:destination_object, :exists?).and_return(true)
+          transfer.can_copy?.should == true
+        end
+      end
+
+      context 'when destination_object does not exist' do
+        it 'returns true' do
+          transfer.stub_chain(:destination_object, :exists?).and_return(false)
+          transfer.can_copy?.should == true
+        end
+      end
+    end
+
+    context 'when force is set to "false"' do
+      before(:each) do
+        options[:force] = false
+      end
+
+      context 'when destination_object exists' do
+        it 'returns false' do
+          transfer.stub_chain(:destination_object, :exists?).and_return(true)
+          transfer.can_copy?.should == false
+        end
+      end
+
+      context 'when destination_object does not exist' do
+        it 'returns true' do
+          transfer.stub_chain(:destination_object, :exists?).and_return(false)
+          transfer.can_copy?.should == true
+        end
+      end
+    end
+  end
 
   describe '#destination' do
     it 'returns destination from bucket_name' do
@@ -52,23 +95,22 @@ describe S3PhotosSyncing::AWS::Transfer do
     end
 
     context 'when source object is valid' do
-      context 'when destination_object already exists' do
+      before(:each) { transfer.stub(:valid_source_object?).and_return(true) }
+
+      context 'when destination_object can not be copied' do
         it 'does not call #copy_from on destination_object' do
-          transfer.stub(:valid_source_object?).and_return(true)
-          transfer.destination_object.stub(:exists?).and_return(true)
+          transfer.stub(:can_copy?).and_return(false)
           transfer.destination_object.should_not_receive(:copy_from)
 
           transfer.run
         end
       end
 
-      context 'when destination_object does not exist' do
+      context 'when destination_object can be copied' do
         it 'calls #copy_from on destination_object' do
           source = mock
-
           transfer.stub(:source).and_return(source)
-          transfer.stub(:valid_source_object?).and_return(true)
-          transfer.destination_object.stub(:exists?).and_return(false)
+          transfer.stub(:can_copy?).and_return(true)
           transfer.destination_object.should_receive(:copy_from).with('awesome-file', bucket: source, acl: :public_read)
 
           transfer.run
