@@ -5,14 +5,15 @@ module S3PhotosSyncing
   class TransferAsynchronously
     include Callable
 
-    def initialize(object, buckets)
+    def initialize(object, options)
       @object      = object
-      @source      = buckets[:source]
-      @destination = buckets[:destination]
+      @source      = options[:buckets][:source]
+      @destination = options[:buckets][:destination]
+      @force       = options[:force]
     end
 
     def call
-      AWS::transfer(@object, from: @source, to: @destination)
+      AWS::transfer(@object, from: @source, to: @destination, force: @force)
     end
   end
 end
