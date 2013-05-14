@@ -3,7 +3,7 @@ require 's3_photos_syncing/processor'
 
 describe S3PhotosSyncing::Processor do
   context 'instance methods' do
-    let(:configuration) { { 'buckets' => { 'source' => 'awesome-bucket' }} }
+    let(:configuration) { { buckets: { :source => 'awesome-bucket' }} }
     let(:processor)     { S3PhotosSyncing::Processor.new(configuration) }
 
     before(:each) { S3PhotosSyncing::Logger.stub(:info) }

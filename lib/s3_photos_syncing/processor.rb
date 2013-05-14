@@ -28,8 +28,8 @@ module S3PhotosSyncing
       Logger.info('Start syncing...')
 
       configure_aws
-      AWS::objects_from(@configuration['buckets']['source'], 'photos').each do |object|
-        execute_asynchronously(TransferAsynchronously.new(object, @configuration['buckets']))
+      AWS::objects_from(@configuration[:buckets][:source], 'photos').each do |object|
+        execute_asynchronously(TransferAsynchronously.new(object, @configuration[:buckets]))
       end
 
       executor.shutdown
