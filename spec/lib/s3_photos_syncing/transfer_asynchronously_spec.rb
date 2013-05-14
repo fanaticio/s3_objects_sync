@@ -7,7 +7,7 @@ describe S3PhotosSyncing::TransferAsynchronously do
       s3_object             = mock
       s3_bucket_source      = mock
       s3_bucket_destination = mock
-      s3_bucket_settings    = { 'source' => s3_bucket_source, 'destination' => s3_bucket_destination }
+      s3_bucket_settings    = { source: s3_bucket_source, destination: s3_bucket_destination }
 
       S3PhotosSyncing::AWS.should_receive(:transfer).with(s3_object, from: s3_bucket_source, to: s3_bucket_destination)
 
