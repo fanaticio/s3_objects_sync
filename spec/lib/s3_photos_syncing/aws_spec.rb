@@ -3,23 +3,23 @@ require 's3_photos_syncing/aws'
 
 describe S3PhotosSyncing::AWS do
   describe '.all_objects_from' do
-    let(:objects_mock) do
-      objects_mock = mock
-      objects_mock.stub(:all)
+    let(:object_mock) do
+      object_mock = mock
+      object_mock.stub(:all)
 
-      objects_mock
+      object_mock
     end
 
-    it 'creates a S3PhotosSyncing::AWS::Objects with a bucket name' do
-      S3PhotosSyncing::AWS::Objects.should_receive(:new).with('awesome_bucket')
-      S3PhotosSyncing::AWS::Objects.stub(:new).and_return(objects_mock)
+    it 'creates a S3PhotosSyncing::AWS::Object with a bucket name' do
+      S3PhotosSyncing::AWS::Object.should_receive(:new).with('awesome_bucket')
+      S3PhotosSyncing::AWS::Object.stub(:new).and_return(object_mock)
 
       S3PhotosSyncing::AWS.all_objects_from('awesome_bucket')
     end
 
-    it 'calls #all on S3PhotosSyncing::AWS::Objects' do
-      S3PhotosSyncing::AWS::Objects.stub(:new).and_return(objects_mock)
-      objects_mock.should_receive(:all)
+    it 'calls #all on S3PhotosSyncing::AWS::Object' do
+      S3PhotosSyncing::AWS::Object.stub(:new).and_return(object_mock)
+      object_mock.should_receive(:all)
 
       S3PhotosSyncing::AWS.all_objects_from('awesome_bucket')
     end
@@ -44,23 +44,23 @@ describe S3PhotosSyncing::AWS do
   end
 
   describe '.objects_with_prefix_from' do
-    let(:objects_mock) do
-      objects_mock = mock
-      objects_mock.stub(:all_with_prefix)
+    let(:object_mock) do
+      object_mock = mock
+      object_mock.stub(:all_with_prefix)
 
-      objects_mock
+      object_mock
     end
 
-    it 'creates a S3PhotosSyncing::AWS::Objects with a bucket name' do
-      S3PhotosSyncing::AWS::Objects.should_receive(:new).with('awesome_bucket')
-      S3PhotosSyncing::AWS::Objects.stub(:new).and_return(objects_mock)
+    it 'creates a S3PhotosSyncing::AWS::Object with a bucket name' do
+      S3PhotosSyncing::AWS::Object.should_receive(:new).with('awesome_bucket')
+      S3PhotosSyncing::AWS::Object.stub(:new).and_return(object_mock)
 
       S3PhotosSyncing::AWS.objects_with_prefix_from('awesome_bucket', 'prefix')
     end
 
-    it 'calls #objects_with_prefix_from on S3PhotosSyncing::AWS::Objects with a prefix' do
-      S3PhotosSyncing::AWS::Objects.stub(:new).and_return(objects_mock)
-      objects_mock.should_receive(:all_with_prefix).with('prefix')
+    it 'calls #objects_with_prefix_from on S3PhotosSyncing::AWS::Object with a prefix' do
+      S3PhotosSyncing::AWS::Object.stub(:new).and_return(object_mock)
+      object_mock.should_receive(:all_with_prefix).with('prefix')
 
       S3PhotosSyncing::AWS.objects_with_prefix_from('awesome_bucket', 'prefix')
     end

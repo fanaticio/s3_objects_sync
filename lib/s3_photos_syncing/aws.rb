@@ -1,12 +1,12 @@
 require 'aws-sdk'
-require 's3_photos_syncing/aws/objects'
+require 's3_photos_syncing/aws/object'
 require 's3_photos_syncing/aws/transfer'
 require 's3_photos_syncing/logger'
 
 module S3PhotosSyncing
   module AWS
     def self.all_objects_from(source_bucket)
-      Objects.new(source_bucket).all
+      Object.new(source_bucket).all
     end
 
     def self.objects_from(source_bucket, prefix=nil)
@@ -18,7 +18,7 @@ module S3PhotosSyncing
     end
 
     def self.objects_with_prefix_from(source_bucket, prefix)
-      Objects.new(source_bucket).all_with_prefix(prefix)
+      Object.new(source_bucket).all_with_prefix(prefix)
     end
 
     def self.transfer(object, options={})
