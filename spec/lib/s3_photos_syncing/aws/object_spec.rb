@@ -1,16 +1,16 @@
 require 'spec_helper'
-require 's3_photos_syncing/aws/objects'
+require 's3_photos_syncing/aws/object'
 
-describe S3PhotosSyncing::AWS::Objects do
-  let(:objects) { S3PhotosSyncing::AWS::Objects.new('awesome_bucket') }
+describe S3PhotosSyncing::AWS::Object do
+  let(:object) { S3PhotosSyncing::AWS::Object.new('awesome_bucket') }
 
   describe '#all' do
     it 'calls #objects on #source' do
       source = mock
       source.should_receive(:objects)
-      objects.stub(:source).and_return(source)
+      object.stub(:source).and_return(source)
 
-      objects.all
+      object.all
     end
   end
 
@@ -18,9 +18,9 @@ describe S3PhotosSyncing::AWS::Objects do
     it 'calls #with_prefix on #all' do
       all = mock
       all.should_receive(:with_prefix).with('awesome-prefix')
-      objects.stub(:all).and_return(all)
+      object.stub(:all).and_return(all)
 
-      objects.all_with_prefix('awesome-prefix')
+      object.all_with_prefix('awesome-prefix')
     end
   end
 
@@ -30,7 +30,7 @@ describe S3PhotosSyncing::AWS::Objects do
       buckets = { 'invalid_bucket' => mock, 'awesome_bucket' => source }
       ::AWS::S3.any_instance.stub(:buckets).and_return(buckets)
 
-      objects.source.should == source
+      object.source.should == source
     end
   end
 end
