@@ -7,8 +7,8 @@ module S3PhotosSyncing
 
     def initialize(object, buckets)
       @object      = object
-      @source      = buckets['source']
-      @destination = buckets['destination']
+      @source      = buckets[:source]
+      @destination = buckets[:destination]
     end
 
     def call
