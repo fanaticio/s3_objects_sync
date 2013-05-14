@@ -12,10 +12,6 @@ module S3PhotosSyncing
       @configuration = configuration
     end
 
-    def configure_aws
-      ::AWS.config(@configuration['authentication'])
-    end
-
     def execute_asynchronously(transfer)
       executor.execute(FutureTask.new(transfer))
     end
@@ -27,13 +23,11 @@ module S3PhotosSyncing
     def run
       Logger.info('Start syncing...')
 
-      configure_aws
       AWS::objects_from(@configuration[:buckets][:source], 'photos').each do |object|
         execute_asynchronously(TransferAsynchronously.new(object, @configuration))
       end
 
       executor.shutdown
     end
-
   end
 end

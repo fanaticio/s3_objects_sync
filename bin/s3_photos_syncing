@@ -4,31 +4,20 @@ $:.push File.expand_path('../../lib', __FILE__)
 
 require 's3_photos_syncing'
 require 'thor'
-require 'yaml'
-
-java_import java.util.concurrent.Executors
-java_import java.util.concurrent.FutureTask
 
 class S3PhotosSyncingScript < Thor
   desc 'start', 'Transfer objects from a bucket to another, asynchronously'
-  method_option :configuration, type: :string,  required: true
   method_option :destination,   type: :string,  required: true
   method_option :force,         type: :boolean, default: false
   method_option :maxthreads,    type: :numeric, default: 10
   method_option :source,        type: :string,  required: true
+
   def start
-    configuration_path = options[:configuration]
-
-    unless configuration_path && File.exists?(configuration_path)
-      puts %{configuration path does not exist: "#{configuration_path}"}
-      exit 1
-    end
-
-    configuration = YAML.load_file(configuration_path)
-    configuration[:max_threads]           = options[:maxthreads]
+    configuration                         = {}
     configuration[:buckets]             ||= {}
     configuration[:buckets][:source]      = options[:source]
     configuration[:buckets][:destination] = options[:destination]
+    configuration[:max_threads]           = options[:maxthreads]
     configuration[:force]                 = options[:force]
 
     S3PhotosSyncing.run(configuration)
