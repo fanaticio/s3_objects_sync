@@ -2,7 +2,7 @@ require 'aws-sdk'
 
 module S3PhotosSyncing
   module AWS
-    class Objects
+    class Object
       def initialize(source_bucket)
         @source_bucket = source_bucket
       end
