@@ -29,7 +29,7 @@ module S3PhotosSyncing
 
       configure_aws
       AWS::objects_from(@configuration[:buckets][:source], 'photos').each do |object|
-        execute_asynchronously(TransferAsynchronously.new(object, @configuration[:buckets]))
+        execute_asynchronously(TransferAsynchronously.new(object, @configuration))
       end
 
       executor.shutdown

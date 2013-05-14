@@ -13,6 +13,7 @@ class S3PhotosSyncingScript < Thor
   desc 'start', 'Transfer objects from a bucket to another, asynchronously'
   method_option :configuration, type: :string,  required: true
   method_option :destination,   type: :string,  required: true
+  method_option :force,         type: :boolean, default: false
   method_option :maxthreads,    type: :numeric, default: 10
   method_option :source,        type: :string,  required: true
   def start
@@ -28,6 +29,7 @@ class S3PhotosSyncingScript < Thor
     configuration[:buckets]             ||= {}
     configuration[:buckets][:source]      = options[:source]
     configuration[:buckets][:destination] = options[:destination]
+    configuration[:force]                 = options[:force]
 
     S3PhotosSyncing.run(configuration)
   end
