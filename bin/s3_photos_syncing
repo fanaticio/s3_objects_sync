@@ -13,12 +13,12 @@ class S3PhotosSyncingScript < Thor
   method_option :source,        type: :string,  required: true
 
   def start
-    configuration                         = {}
-    configuration[:buckets]             ||= {}
-    configuration[:buckets][:source]      = options[:source]
-    configuration[:buckets][:destination] = options[:destination]
-    configuration[:max_threads]           = options[:maxthreads]
-    configuration[:force]                 = options[:force]
+    configuration                           = {}
+    configuration[:buckets]               ||= {}
+    configuration[:buckets][:destination]   = options[:destination]
+    configuration[:buckets][:source]        = options[:source]
+    configuration[:force]                   = options[:force]
+    configuration[:max_threads]             = options[:maxthreads]
 
     S3PhotosSyncing.run(configuration)
   end
