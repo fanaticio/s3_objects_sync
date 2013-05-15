@@ -8,16 +8,6 @@ describe S3PhotosSyncing::Processor do
 
     before(:each) { S3PhotosSyncing::Logger.stub(:info) }
 
-    describe '#configure_aws' do
-      it 'configures globally AWS' do
-        authentication_mock = mock
-        configuration.merge!({ 'authentication' => authentication_mock, 'other' => 'value' })
-        ::AWS.should_receive(:config).with(authentication_mock)
-
-        processor.configure_aws
-      end
-    end
-
     describe '#execute_asynchronously' do
       let(:executor) do
         executor = mock
@@ -27,7 +17,6 @@ describe S3PhotosSyncing::Processor do
       end
 
       before(:each) do
-        S3PhotosSyncing::Processor.any_instance.stub(:configure_aws)
         processor.stub(:executor).and_return(executor)
       end
 
@@ -48,8 +37,6 @@ describe S3PhotosSyncing::Processor do
     end
 
     describe '#executor' do
-      before(:each) { S3PhotosSyncing::Processor.any_instance.stub(:configure_aws) }
-
       it 'creates new Executors instance with number of threads based on options' do
         configuration[:max_threads] = 42
 
@@ -67,15 +54,8 @@ describe S3PhotosSyncing::Processor do
       end
 
       before(:each) do
-        S3PhotosSyncing::Processor.any_instance.stub(:configure_aws)
         S3PhotosSyncing::AWS.stub(:objects_from).and_return([])
         processor.stub(:executor).and_return(executor)
-      end
-
-      it 'calls S3PhotosSyncing::AWS::objects_from' do
-        processor.should_receive(:configure_aws)
-
-        processor.run
       end
 
       it 'calls S3PhotosSyncing::AWS::objects_from' do
