@@ -1,7 +1,7 @@
 require 'aws-sdk'
-require 's3_photos_syncing/logger'
+require 's3_objects_sync/logger'
 
-module S3PhotosSyncing
+module S3ObjectsSync
   module AWS
     class Transfer
       def initialize(object, options)

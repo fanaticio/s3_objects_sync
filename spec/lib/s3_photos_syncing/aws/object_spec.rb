@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 's3_photos_syncing/aws/object'
+require 's3_objects_sync/aws/object'
 
-describe S3PhotosSyncing::AWS::Object do
-  let(:object) { S3PhotosSyncing::AWS::Object.new('awesome_bucket') }
+describe S3ObjectsSync::AWS::Object do
+  let(:object) { S3ObjectsSync::AWS::Object.new('awesome_bucket') }
 
   describe '#all' do
     it 'calls #objects on #source' do

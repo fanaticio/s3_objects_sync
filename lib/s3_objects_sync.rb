@@ -1,6 +1,6 @@
-require 's3_photos_syncing/processor'
+require 's3_objects_sync/processor'
 
-module S3PhotosSyncing
+module S3ObjectsSync
   def self.run(configuration)
     Processor.new(configuration).run
   end

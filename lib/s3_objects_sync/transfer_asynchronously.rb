@@ -1,7 +1,7 @@
 java_import java.util.concurrent.Callable
-require 's3_photos_syncing/aws'
+require 's3_objects_sync/aws'
 
-module S3PhotosSyncing
+module S3ObjectsSync
   class TransferAsynchronously
     include Callable
 

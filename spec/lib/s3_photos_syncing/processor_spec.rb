@@ -1,12 +1,12 @@
 require 'spec_helper'
-require 's3_photos_syncing/processor'
+require 's3_objects_sync/processor'
 
-describe S3PhotosSyncing::Processor do
+describe S3ObjectsSync::Processor do
   context 'instance methods' do
     let(:configuration) { { buckets: { :source => 'awesome-bucket' }} }
-    let(:processor)     { S3PhotosSyncing::Processor.new(configuration) }
+    let(:processor)     { S3ObjectsSync::Processor.new(configuration) }
 
-    before(:each) { S3PhotosSyncing::Logger.stub(:info) }
+    before(:each) { S3ObjectsSync::Logger.stub(:info) }
 
     describe '#execute_asynchronously' do
       let(:executor) do
@@ -54,26 +54,26 @@ describe S3PhotosSyncing::Processor do
       end
 
       before(:each) do
-        S3PhotosSyncing::AWS.stub(:objects_from).and_return([])
+        S3ObjectsSync::AWS.stub(:objects_from).and_return([])
         processor.stub(:executor).and_return(executor)
       end
 
-      it 'calls S3PhotosSyncing::AWS::objects_from' do
-        S3PhotosSyncing::AWS.should_receive(:objects_from).with('awesome-bucket', 'photos')
+      it 'calls S3ObjectsSync::AWS::objects_from' do
+        S3ObjectsSync::AWS.should_receive(:objects_from).with('awesome-bucket', 'photos')
 
         processor.run
       end
 
-      it 'creates X S3PhotosSyncing::TransferAsynchronously' do
-        S3PhotosSyncing::TransferAsynchronously.should_receive(:new).exactly(3).times
-        S3PhotosSyncing::AWS.stub(:objects_from).and_return([mock, mock, mock])
+      it 'creates X S3ObjectsSync::TransferAsynchronously' do
+        S3ObjectsSync::TransferAsynchronously.should_receive(:new).exactly(3).times
+        S3ObjectsSync::AWS.stub(:objects_from).and_return([mock, mock, mock])
         processor.stub(:execute_asynchronously)
 
         processor.run
       end
 
       it 'calls X times #execute_asynchronously' do
-        S3PhotosSyncing::AWS.stub(:objects_from).and_return([mock, mock, mock])
+        S3ObjectsSync::AWS.stub(:objects_from).and_return([mock, mock, mock])
         processor.should_receive(:execute_asynchronously).exactly(3).times
 
         processor.run

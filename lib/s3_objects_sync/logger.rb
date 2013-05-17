@@ -1,4 +1,4 @@
-module S3PhotosSyncing
+module S3ObjectsSync
   class Logger
     def self.error(message)
       write_message(:error, message)
