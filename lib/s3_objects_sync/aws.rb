@@ -1,9 +1,9 @@
 require 'aws-sdk'
-require 's3_photos_syncing/aws/object'
-require 's3_photos_syncing/aws/transfer'
-require 's3_photos_syncing/logger'
+require 's3_objects_sync/aws/object'
+require 's3_objects_sync/aws/transfer'
+require 's3_objects_sync/logger'
 
-module S3PhotosSyncing
+module S3ObjectsSync
   module AWS
     def self.all_objects_from(source_bucket)
       Object.new(source_bucket).all

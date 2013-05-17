@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 's3_photos_syncing'
+require 's3_objects_sync'
 
-describe S3PhotosSyncing do
+describe S3ObjectsSync do
   describe '.run' do
     let(:processor) do
       processor = mock
@@ -10,16 +10,16 @@ describe S3PhotosSyncing do
       processor
     end
 
-    it 'creates a S3PhotosSyncing::Processor' do
-      S3PhotosSyncing::Processor.should_receive(:new).and_return(processor)
-      S3PhotosSyncing.run({})
+    it 'creates a S3ObjectsSync::Processor' do
+      S3ObjectsSync::Processor.should_receive(:new).and_return(processor)
+      S3ObjectsSync.run({})
     end
 
-    it 'calls #run on a S3PhotosSyncing::Processor' do
-      S3PhotosSyncing::Processor.should_receive(:new).and_return(processor)
+    it 'calls #run on a S3ObjectsSync::Processor' do
+      S3ObjectsSync::Processor.should_receive(:new).and_return(processor)
       processor.should_receive(:run)
 
-      S3PhotosSyncing.run({})
+      S3ObjectsSync.run({})
     end
   end
 end

@@ -2,10 +2,10 @@
 
 $:.push File.expand_path('../../lib', __FILE__)
 
-require 's3_photos_syncing'
+require 's3_objects_sync'
 require 'thor'
 
-class S3PhotosSyncingScript < Thor
+class S3ObjectsSync < Thor
   desc 'start', 'Transfer objects from a bucket to another, asynchronously'
   method_option :destination,   type: :string,  required: true
   method_option :force,         type: :boolean, default: false
@@ -20,8 +20,8 @@ class S3PhotosSyncingScript < Thor
     configuration[:force]                   = options[:force]
     configuration[:max_threads]             = options[:maxthreads]
 
-    S3PhotosSyncing.run(configuration)
+    S3ObjectsSync.run(configuration)
   end
 end
 
-S3PhotosSyncingScript.start
+S3ObjectsSync.start
