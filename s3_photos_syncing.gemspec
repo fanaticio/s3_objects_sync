@@ -1,21 +1,21 @@
 $:.push File.expand_path('../lib', __FILE__)
 
-require 's3_photos_syncing/version'
+require 's3_objects_sync/version'
 
 Gem::Specification.new do |s|
-  s.name        = 's3_photos_syncing'
-  s.version     = S3PhotosSyncing::VERSION
+  s.name        = 's3_objects_sync'
+  s.version     = S3ObjectsSync::VERSION
   s.license     = 'BSD'
   s.authors     = ['Fanatic/IO']
   s.email       = ['contact@fanatic.io']
-  s.homepage    = 'https://github.com/fanaticio/s3_photos_syncing'
+  s.homepage    = 'https://github.com/fanaticio/s3_objects_sync'
   s.summary     = 'Fast S3 objects sync from one bucket to another'
   s.description = <<-EOF
     This gem helps you move a large number of S3 objects from one bucket to another.
     It relies on JRuby's excellent implementation of native OS Threads.
   EOF
 
-  s.executables = ['s3_photos_syncing']
+  s.executables = ['s3_objects_sync']
 
   s.add_dependency 'aws-sdk'
   s.add_dependency 'thor'

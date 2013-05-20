@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 's3_photos_syncing/aws/transfer'
+require 's3_objects_sync/aws/transfer'
 
-describe S3PhotosSyncing::AWS::Transfer do
+describe S3ObjectsSync::AWS::Transfer do
   let(:object)   { mock }
-  let(:transfer) { S3PhotosSyncing::AWS::Transfer.new(object, options) }
+  let(:transfer) { S3ObjectsSync::AWS::Transfer.new(object, options) }
   let(:options)  { { from: 'awesome_bucket', to: 'another_bucket' } }
 
   describe '#can_copy?' do
@@ -81,8 +81,8 @@ describe S3PhotosSyncing::AWS::Transfer do
       transfer.stub(:destination_object).and_return(destination_object)
       transfer.stub(:source_object).and_return(source_object)
 
-      S3PhotosSyncing::Logger.stub(:error)
-      S3PhotosSyncing::Logger.stub(:info)
+      S3ObjectsSync::Logger.stub(:error)
+      S3ObjectsSync::Logger.stub(:info)
     end
 
     context 'when source object is not valid' do
