@@ -116,6 +116,18 @@ describe S3ObjectsSync::AWS::Transfer do
           transfer.run
         end
       end
+
+      context 'when copy raises an error' do
+        it 'logs the error' do
+          source = mock
+          transfer.stub(:source).and_return(source)
+          transfer.stub(:can_copy?).and_return(true)
+          transfer.destination_object.stub(:copy_from).and_raise(Exception)
+
+          S3ObjectsSync::Logger.should_receive(:error)
+          transfer.run
+        end
+      end
     end
   end
 
