@@ -8,6 +8,7 @@ module S3ObjectsSync
         @object             = object
         @source_bucket      = options[:from]
         @destination_bucket = options[:to]
+        @file_format        = options[:file_format]
         @force              = options[:force]
       end
 
@@ -43,11 +44,6 @@ module S3ObjectsSync
         end
       end
 
-      # TODO: use file format from options and add specs
-      def file_format
-        /\.jp[e]?g$/i
-      end
-
       def source
         @source ||= ::AWS::S3.new.buckets[@source_bucket]
       end
@@ -57,7 +53,7 @@ module S3ObjectsSync
       end
 
       def valid_source_object?
-        !!(source_object.key =~ file_format)
+        !! Regexp.new(@file_format).match(source_object.key)
       end
     end
   end
