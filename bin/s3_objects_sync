@@ -1,6 +1,6 @@
 #!/usr/bin/env jruby
-
 $:.push File.expand_path('../../lib', __FILE__)
+
 
 require 's3_objects_sync'
 require 'thor'
@@ -8,8 +8,8 @@ require 'thor'
 class S3ObjectsSyncScript < Thor
   desc 'start', 'Transfer objects from a bucket to another, asynchronously'
   method_option :destination,   type: :string,  required: true
-  method_option :file_format,   type: :string
   method_option :force,         type: :boolean, default: false
+  method_option :format,        type: :string
   method_option :maxthreads,    type: :numeric, default: 10
   method_option :source,        type: :string,  required: true
 
@@ -18,8 +18,8 @@ class S3ObjectsSyncScript < Thor
     configuration[:buckets]               ||= {}
     configuration[:buckets][:destination]   = options[:destination]
     configuration[:buckets][:source]        = options[:source]
-    configuration[:file_format]             = options[:file_format]
     configuration[:force]                   = options[:force]
+    configuration[:format]                  = options[:format]
     configuration[:max_threads]             = options[:maxthreads]
 
     S3ObjectsSync.run(configuration)

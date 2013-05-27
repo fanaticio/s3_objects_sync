@@ -8,8 +8,8 @@ module S3ObjectsSync
         @object             = object
         @source_bucket      = options[:from]
         @destination_bucket = options[:to]
-        @file_format        = options[:file_format]
         @force              = options[:force]
+        @format             = options[:format]
       end
 
       def can_copy?
@@ -53,7 +53,7 @@ module S3ObjectsSync
       end
 
       def valid_source_object?
-        !! Regexp.new(@file_format).match(source_object.key)
+        !! Regexp.new(@format).match(source_object.key)
       end
     end
   end
