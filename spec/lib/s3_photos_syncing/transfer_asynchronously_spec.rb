@@ -3,16 +3,26 @@ require 's3_objects_sync/transfer_asynchronously'
 
 describe S3ObjectsSync::TransferAsynchronously do
   describe '#call' do
+    let(:s3_bucket_settings) do
+      {
+        buckets: {
+          source:      s3_bucket_source,
+          destination: s3_bucket_destination
+        },
+        force:  false,
+        format: 'awesome_format'
+      }
+    end
+
+    let(:s3_object)             { mock }
+    let(:s3_bucket_source)      { mock }
+    let(:s3_bucket_destination) { mock }
+
     it 'calls .transfer on AWS' do
-      s3_object             = mock
-      s3_bucket_source      = mock
-      s3_bucket_destination = mock
-      s3_bucket_settings    = { buckets: { source: s3_bucket_source, destination: s3_bucket_destination }, force: false }
+      expected_parameters = { from: s3_bucket_source, to: s3_bucket_destination, force: false, format: 'awesome_format' }
+      S3ObjectsSync::AWS.should_receive(:transfer).with(s3_object, expected_parameters)
 
-      S3ObjectsSync::AWS.should_receive(:transfer).with(s3_object, from: s3_bucket_source, to: s3_bucket_destination, force: false)
-
-      instance = S3ObjectsSync::TransferAsynchronously.new(s3_object, s3_bucket_settings)
-      instance.call
+      S3ObjectsSync::TransferAsynchronously.new(s3_object, s3_bucket_settings).call
     end
   end
 end

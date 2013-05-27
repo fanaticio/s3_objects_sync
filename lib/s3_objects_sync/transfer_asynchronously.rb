@@ -10,10 +10,11 @@ module S3ObjectsSync
       @source      = options[:buckets][:source]
       @destination = options[:buckets][:destination]
       @force       = options[:force]
+      @format      = options[:format]
     end
 
     def call
-      AWS::transfer(@object, from: @source, to: @destination, force: @force)
+      AWS::transfer(@object, from: @source, to: @destination, force: @force, format: @format)
     end
   end
 end
