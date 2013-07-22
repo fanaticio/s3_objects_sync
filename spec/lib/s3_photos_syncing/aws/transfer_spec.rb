@@ -148,7 +148,7 @@ describe S3ObjectsSync::AWS::Transfer do
   end
 
   describe '#valid_source_object?' do
-    before(:each) { transfer.stub(:file_format).and_return(/\.ext$/i) }
+    before(:each) { options[:format] = '\.ext$' }
 
     context 'when source_object has a valid extension' do
       it 'returns true' do
