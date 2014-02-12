@@ -2,7 +2,7 @@ require 'spec_helper'
 require 's3_objects_sync/aws/transfer'
 
 describe S3ObjectsSync::AWS::Transfer do
-  let(:object)   { mock }
+  let(:object)   { double }
   let(:transfer) { S3ObjectsSync::AWS::Transfer.new(object, options) }
   let(:options)  { { from: 'awesome_bucket', to: 'another_bucket' } }
 
@@ -50,8 +50,8 @@ describe S3ObjectsSync::AWS::Transfer do
 
   describe '#destination' do
     it 'returns destination from bucket_name' do
-      destination  = mock
-      buckets = { 'another_bucket' => destination, 'invalid_bucket' => mock }
+      destination  = double
+      buckets = { 'another_bucket' => destination, 'invalid_bucket' => double }
       ::AWS::S3.any_instance.stub(:buckets).and_return(buckets)
 
       transfer.destination.should == destination
@@ -60,9 +60,9 @@ describe S3ObjectsSync::AWS::Transfer do
 
   describe '#destination_object' do
     it 'returns destination_object from destination bucket' do
-      destination_object = mock
-      objects            = { awesome_key: destination_object, invalid_key: mock }
-      destination        = mock
+      destination_object = double
+      objects            = { awesome_key: destination_object, invalid_key: double }
+      destination        = double
 
       destination.stub(:objects).and_return(objects)
       object.stub(:key).and_return(:awesome_key)
@@ -74,8 +74,8 @@ describe S3ObjectsSync::AWS::Transfer do
 
   describe '#run' do
     before(:each) do
-      destination_object = mock
-      source_object      = mock
+      destination_object = double
+      source_object      = double
       source_object.stub(:key).and_return('awesome-file')
 
       transfer.stub(:destination_object).and_return(destination_object)
@@ -108,7 +108,7 @@ describe S3ObjectsSync::AWS::Transfer do
 
       context 'when destination_object can be copied' do
         it 'calls #copy_from on destination_object' do
-          source = mock
+          source = double
           transfer.stub(:source).and_return(source)
           transfer.stub(:can_copy?).and_return(true)
           transfer.destination_object.should_receive(:copy_from).with('awesome-file', bucket: source, acl: :public_read)
@@ -119,7 +119,7 @@ describe S3ObjectsSync::AWS::Transfer do
 
       context 'when copy raises an error' do
         it 'logs the error' do
-          source = mock
+          source = double
           transfer.stub(:source).and_return(source)
           transfer.stub(:can_copy?).and_return(true)
           transfer.destination_object.stub(:copy_from).and_raise(Exception)
@@ -133,8 +133,8 @@ describe S3ObjectsSync::AWS::Transfer do
 
   describe '#source' do
     it 'returns source from bucket_name' do
-      source  = mock
-      buckets = { 'awesome_bucket' => source, 'invalid_bucket' => mock }
+      source  = double
+      buckets = { 'awesome_bucket' => source, 'invalid_bucket' => double }
       ::AWS::S3.any_instance.stub(:buckets).and_return(buckets)
 
       transfer.source.should == source
@@ -152,7 +152,7 @@ describe S3ObjectsSync::AWS::Transfer do
 
     context 'when source_object has a valid extension' do
       it 'returns true' do
-        source_object = mock
+        source_object = double
         source_object.stub(:key).and_return('awesome-file.ext')
         transfer.stub(:source_object).and_return(source_object)
 
@@ -162,7 +162,7 @@ describe S3ObjectsSync::AWS::Transfer do
 
     context 'when source_object has an invalid extension' do
       it 'returns false' do
-        source_object = mock
+        source_object = double
         source_object.stub(:key).and_return('awesome-file.txe')
         transfer.stub(:source_object).and_return(source_object)
 

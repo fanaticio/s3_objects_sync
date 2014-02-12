@@ -6,7 +6,7 @@ describe S3ObjectsSync::AWS::Object do
 
   describe '#all' do
     it 'calls #objects on #source' do
-      source = mock
+      source = double
       source.should_receive(:objects)
       object.stub(:source).and_return(source)
 
@@ -16,7 +16,7 @@ describe S3ObjectsSync::AWS::Object do
 
   describe '#all_with_prefix' do
     it 'calls #with_prefix on #all' do
-      all = mock
+      all = double
       all.should_receive(:with_prefix).with('awesome-prefix')
       object.stub(:all).and_return(all)
 
@@ -26,8 +26,8 @@ describe S3ObjectsSync::AWS::Object do
 
   describe '#source' do
     it 'returns source from bucket_name' do
-      source  = mock
-      buckets = { 'invalid_bucket' => mock, 'awesome_bucket' => source }
+      source  = double
+      buckets = { 'invalid_bucket' => double, 'awesome_bucket' => source }
       ::AWS::S3.any_instance.stub(:buckets).and_return(buckets)
 
       object.source.should == source
