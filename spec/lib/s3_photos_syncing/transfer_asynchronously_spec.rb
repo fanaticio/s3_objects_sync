@@ -14,9 +14,9 @@ describe S3ObjectsSync::TransferAsynchronously do
       }
     end
 
-    let(:s3_object)             { mock }
-    let(:s3_bucket_source)      { mock }
-    let(:s3_bucket_destination) { mock }
+    let(:s3_object)             { double }
+    let(:s3_bucket_source)      { double }
+    let(:s3_bucket_destination) { double }
 
     it 'calls .transfer on AWS' do
       expected_parameters = { from: s3_bucket_source, to: s3_bucket_destination, force: false, format: 'awesome_format' }

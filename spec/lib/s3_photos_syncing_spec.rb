@@ -4,7 +4,7 @@ require 's3_objects_sync'
 describe S3ObjectsSync do
   describe '.run' do
     let(:processor) do
-      processor = mock
+      processor = double
       processor.stub(:run)
 
       processor
