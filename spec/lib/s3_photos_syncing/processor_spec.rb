@@ -10,7 +10,7 @@ describe S3ObjectsSync::Processor do
 
     describe '#execute_asynchronously' do
       let(:executor) do
-        executor = mock
+        executor = double
         executor.stub(:execute)
 
         executor
@@ -21,18 +21,18 @@ describe S3ObjectsSync::Processor do
       end
 
       it 'creates a FutureTask object with transfer' do
-        transfer = mock
+        transfer = double
         FutureTask.should_receive(:new).with(transfer)
 
         processor.execute_asynchronously(transfer)
       end
 
       it 'calls #execute on executor with a FutureTask object' do
-        future_task = mock
+        future_task = double
         FutureTask.stub(:new).and_return(future_task)
         executor.should_receive(:execute).with(future_task)
 
-        processor.execute_asynchronously(mock)
+        processor.execute_asynchronously(double)
       end
     end
 
@@ -47,7 +47,7 @@ describe S3ObjectsSync::Processor do
 
     describe '#run' do
       let(:executor) do
-        executor = mock
+        executor = double
         executor.stub(:shutdown)
 
         executor
@@ -66,14 +66,14 @@ describe S3ObjectsSync::Processor do
 
       it 'creates X S3ObjectsSync::TransferAsynchronously' do
         S3ObjectsSync::TransferAsynchronously.should_receive(:new).exactly(3).times
-        S3ObjectsSync::AWS.stub(:objects_from).and_return([mock, mock, mock])
+        S3ObjectsSync::AWS.stub(:objects_from).and_return([double, double, double])
         processor.stub(:execute_asynchronously)
 
         processor.run
       end
 
       it 'calls X times #execute_asynchronously' do
-        S3ObjectsSync::AWS.stub(:objects_from).and_return([mock, mock, mock])
+        S3ObjectsSync::AWS.stub(:objects_from).and_return([double, double, double])
         processor.should_receive(:execute_asynchronously).exactly(3).times
 
         processor.run
